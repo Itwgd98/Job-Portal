@@ -9,7 +9,6 @@ coverage/
 .idea/
 *.log
 *.tsbuildinfo
-build/
 .cache/
 .next/
 out/
