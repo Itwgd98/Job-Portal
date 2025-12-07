@@ -34,6 +34,15 @@ app.use("/api/v1/company", companyRoute);
 app.use("/api/v1/job", jobRoute);
 app.use("/api/v1/application", applicationRoute);
 
+// Version check endpoint - deploy timestamp: 2024-12-07 17:20
+app.get("/api/v1/version", (req, res) => {
+  res.json({
+    version: "2.0.1",
+    deployTime: "2024-12-07 17:20",
+    pdfFix: "resource_type: raw for PDFs"
+  });
+});
+
 // ----------------------------
 // SERVE FRONTEND FOR PRODUCTION
 // ----------------------------
