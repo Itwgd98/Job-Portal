@@ -147,15 +147,16 @@ export const updateProfile = async (req, res) => {
             const isPDF = file.originalname.toLowerCase().endsWith('.pdf');
 
             if (isPDF) {
-                // For PDFs: use upload_stream with raw resource type
-                // This properly handles binary PDF data without corruption
+                // Upload PDF as 'image' type with 'pdf' format
+                // This makes Cloudinary serve with correct Content-Type header
+                // so browsers can display it inline
                 cloudResponse = await new Promise((resolve, reject) => {
                     const uploadStream = cloudinary.uploader.upload_stream(
                         {
-                            resource_type: "raw",
+                            resource_type: "image",
                             folder: "resumes",
-                            public_id: `resume_${Date.now()}`,
-                            format: "pdf"
+                            format: "pdf",
+                            flags: "attachment:false"
                         },
                         (error, result) => {
                             if (error) reject(error);
