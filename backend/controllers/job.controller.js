@@ -12,15 +12,25 @@ export const postJob = async (req, res) => {
                 success: false
             })
         };
+
+        // Parse position as number, handle string input
+        const positionNum = parseInt(position, 10);
+        if (isNaN(positionNum)) {
+            return res.status(400).json({
+                message: "Position must be a valid number.",
+                success: false
+            });
+        }
+
         const job = await Job.create({
             title,
             description,
             requirements: requirements.split(","),
-            salary: Number(salary),
+            salary: salary, // Keep as string to allow formats like "₹6,00,000 – ₹12,00,000"
             location,
             jobType,
             experienceLevel: experience,
-            position,
+            position: positionNum,
             company: companyId,
             created_by: userId
         });
@@ -32,7 +42,7 @@ export const postJob = async (req, res) => {
     } catch (error) {
         console.log(error);
         return res.status(500).json({
-            message: "Failed to create job. Please try again.",
+            message: error.message || "Failed to create job. Please try again.",
             success: false
         });
     }
