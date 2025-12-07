@@ -34,12 +34,12 @@ app.use("/api/v1/company", companyRoute);
 app.use("/api/v1/job", jobRoute);
 app.use("/api/v1/application", applicationRoute);
 
-// Version check endpoint - deploy timestamp: 2024-12-07 18:10
+// Version check endpoint - deploy timestamp: 2024-12-07 20:35
 app.get("/api/v1/version", (req, res) => {
   res.json({
-    version: "2.0.2",
-    deployTime: "2024-12-07 18:10",
-    pdfFix: "PDF with format and use_filename"
+    version: "2.0.3",
+    deployTime: "2024-12-07 20:35",
+    pdfFix: "Frontend URL transform for direct PDF download"
   });
 });
 

@@ -1,13 +1,23 @@
 import React from 'react'
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from '../ui/table'
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
-import { MoreHorizontal } from 'lucide-react';
+import { MoreHorizontal, Download } from 'lucide-react';
 import { useSelector } from 'react-redux';
 import { toast } from 'sonner';
 import { APPLICATION_API_END_POINT } from '@/utils/constant';
 import axios from 'axios';
 
 const shortlistingStatus = ["Accepted", "Rejected"];
+
+// Helper function to transform Cloudinary URL to force download
+const getDownloadUrl = (url) => {
+    if (!url) return null;
+    // Replace /image/upload/ or /raw/upload/ with /raw/upload/fl_attachment/
+    // This forces the browser to download the file instead of trying to display it
+    return url
+        .replace('/image/upload/', '/raw/upload/fl_attachment/')
+        .replace('/raw/upload/', '/raw/upload/fl_attachment/');
+};
 
 const ApplicantsTable = () => {
     const { applicants } = useSelector(store => store.application);
@@ -49,7 +59,16 @@ const ApplicantsTable = () => {
                                 <TableCell>{item?.applicant?.phoneNumber}</TableCell>
                                 <TableCell >
                                     {
-                                        item.applicant?.profile?.resume ? <a className="text-blue-600 cursor-pointer" href={item?.applicant?.profile?.resume} target="_blank" rel="noopener noreferrer">{item?.applicant?.profile?.resumeOriginalName}</a> : <span>NA</span>
+                                        item.applicant?.profile?.resume ? (
+                                            <a
+                                                className="text-blue-600 cursor-pointer flex items-center gap-1 hover:underline"
+                                                href={getDownloadUrl(item?.applicant?.profile?.resume)}
+                                                download={item?.applicant?.profile?.resumeOriginalName}
+                                            >
+                                                <Download className="w-4 h-4" />
+                                                {item?.applicant?.profile?.resumeOriginalName}
+                                            </a>
+                                        ) : <span>NA</span>
                                     }
                                 </TableCell>
                                 <TableCell>{item?.applicant.createdAt.split("T")[0]}</TableCell>
