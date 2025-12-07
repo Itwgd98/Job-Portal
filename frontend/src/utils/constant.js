@@ -1,4 +1,5 @@
-export const BASE_URL = "https://job-portal-gb9w.onrender.com";
+// Use relative URL for same-origin deployment (frontend served from backend)
+export const BASE_URL = "";
 
 export const USER_API_END_POINT = `${BASE_URL}/api/v1/user`;
 export const JOB_API_END_POINT = `${BASE_URL}/api/v1/job`;

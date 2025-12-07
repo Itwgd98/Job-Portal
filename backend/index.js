@@ -19,13 +19,14 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
-// CORS (only for local development)
-app.use(
-  cors({
-    origin: "http://localhost:5173",
-    credentials: true,
-  })
-);
+// CORS configuration
+const corsOptions = {
+  origin: process.env.NODE_ENV === 'production'
+    ? true  // Allow same-origin in production
+    : "http://localhost:5173",  // Allow localhost in development
+  credentials: true,
+};
+app.use(cors(corsOptions));
 
 // API routes
 app.use("/api/v1/user", userRoute);
