@@ -144,21 +144,33 @@ export const updateProfile = async (req, res) => {
 
         // Only upload if file exists
         if (file) {
-            const fileUri = getDataUri(file);
             const isPDF = file.originalname.toLowerCase().endsWith('.pdf');
 
-            // For PDFs: use raw type with format to preserve .pdf extension
-            // This ensures the URL ends with .pdf so browsers handle it correctly
-            const uploadOptions = isPDF
-                ? {
-                    resource_type: "raw",
-                    format: "pdf",
-                    use_filename: true,
-                    unique_filename: true
-                }
-                : { resource_type: "auto" };
-
-            cloudResponse = await cloudinary.uploader.upload(fileUri.content, uploadOptions);
+            if (isPDF) {
+                // For PDFs: use upload_stream with raw resource type
+                // This properly handles binary PDF data without corruption
+                cloudResponse = await new Promise((resolve, reject) => {
+                    const uploadStream = cloudinary.uploader.upload_stream(
+                        {
+                            resource_type: "raw",
+                            folder: "resumes",
+                            public_id: `resume_${Date.now()}`,
+                            format: "pdf"
+                        },
+                        (error, result) => {
+                            if (error) reject(error);
+                            else resolve(result);
+                        }
+                    );
+                    uploadStream.end(file.buffer);
+                });
+            } else {
+                // For images: use data URI with auto detection
+                const fileUri = getDataUri(file);
+                cloudResponse = await cloudinary.uploader.upload(fileUri.content, {
+                    resource_type: "auto"
+                });
+            }
         }
 
         let skillsArray;
