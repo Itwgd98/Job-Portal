@@ -34,12 +34,12 @@ app.use("/api/v1/company", companyRoute);
 app.use("/api/v1/job", jobRoute);
 app.use("/api/v1/application", applicationRoute);
 
-// Version check endpoint - deploy timestamp: 2024-12-07 20:48
+// Version check endpoint - deploy timestamp: 2024-12-07 20:50
 app.get("/api/v1/version", (req, res) => {
   res.json({
-    version: "2.0.5",
-    deployTime: "2024-12-07 20:48",
-    pdfFix: "Build in correct backend/build folder"
+    version: "2.0.6",
+    deployTime: "2024-12-07 20:50",
+    pdfFix: "Google Docs Viewer for PDF preview in browser"
   });
 });
 

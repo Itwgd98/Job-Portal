@@ -9,12 +9,14 @@ import axios from 'axios';
 
 const shortlistingStatus = ["Accepted", "Rejected"];
 
-// Helper function to fix Cloudinary URL for PDF viewing
-// Changes /image/upload/ to /raw/upload/ so PDFs can be viewed in browser
+// Helper function to get viewable PDF URL using Google Docs Viewer
+// This opens PDFs in browser instead of downloading
 const getViewableUrl = (url) => {
     if (!url) return null;
-    // Replace /image/upload/ with /raw/upload/ for proper PDF handling
-    return url.replace('/image/upload/', '/raw/upload/');
+    // Fix the URL path first (image/upload -> raw/upload)
+    const fixedUrl = url.replace('/image/upload/', '/raw/upload/');
+    // Use Google Docs Viewer to display PDF in browser
+    return `https://docs.google.com/viewer?url=${encodeURIComponent(fixedUrl)}&embedded=true`;
 };
 
 const ApplicantsTable = () => {
