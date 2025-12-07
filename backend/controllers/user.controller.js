@@ -145,11 +145,20 @@ export const updateProfile = async (req, res) => {
         // Only upload if file exists
         if (file) {
             const fileUri = getDataUri(file);
-            // Use 'raw' for PDFs/documents to ensure they can be viewed/downloaded
             const isPDF = file.originalname.toLowerCase().endsWith('.pdf');
-            cloudResponse = await cloudinary.uploader.upload(fileUri.content, {
-                resource_type: isPDF ? "raw" : "auto"
-            });
+
+            // For PDFs: use raw type with format to preserve .pdf extension
+            // This ensures the URL ends with .pdf so browsers handle it correctly
+            const uploadOptions = isPDF
+                ? {
+                    resource_type: "raw",
+                    format: "pdf",
+                    use_filename: true,
+                    unique_filename: true
+                }
+                : { resource_type: "auto" };
+
+            cloudResponse = await cloudinary.uploader.upload(fileUri.content, uploadOptions);
         }
 
         let skillsArray;
