@@ -140,13 +140,17 @@ export const updateProfile = async (req, res) => {
         const { fullname, email, phoneNumber, bio, skills } = req.body;
 
         const file = req.file;
-        // cloudinary ayega idhar
-        const fileUri = getDataUri(file);
-        const cloudResponse = await cloudinary.uploader.upload(fileUri.content, {
-            resource_type: "auto"  // Supports PDFs, images, and other file types
-        });
+        let cloudResponse = null;
 
-
+        // Only upload if file exists
+        if (file) {
+            const fileUri = getDataUri(file);
+            // Use 'raw' for PDFs/documents to ensure they can be viewed/downloaded
+            const isPDF = file.originalname.toLowerCase().endsWith('.pdf');
+            cloudResponse = await cloudinary.uploader.upload(fileUri.content, {
+                resource_type: isPDF ? "raw" : "auto"
+            });
+        }
 
         let skillsArray;
         if (skills) {
