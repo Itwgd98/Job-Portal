@@ -194,8 +194,14 @@ export const updateProfile = async (req, res) => {
 
         // resume comes later here...
         if (cloudResponse) {
-            user.profile.resume = cloudResponse.secure_url // save the cloudinary url
-            user.profile.resumeOriginalName = file.originalname // Save the original file name
+            // Check if it was a PDF (resume) or Image (profile photo)
+            const isPDF = file.originalname.toLowerCase().endsWith('.pdf');
+            if (isPDF) {
+                user.profile.resume = cloudResponse.secure_url // save the cloudinary url
+                user.profile.resumeOriginalName = file.originalname // Save the original file name
+            } else {
+                user.profile.profilePhoto = cloudResponse.secure_url // save the profile photo
+            }
         }
 
 

@@ -37,9 +37,9 @@ app.use("/api/v1/application", applicationRoute);
 // Version check endpoint - deploy timestamp: 2024-12-07 20:50
 app.get("/api/v1/version", (req, res) => {
   res.json({
-    version: "2.0.6",
-    deployTime: "2024-12-07 20:50",
-    pdfFix: "Google Docs Viewer for PDF preview in browser"
+    version: "2.1.0",
+    deployTime: "2025-12-08 19:15",
+    pdfFix: "Fixed updateProfile bug and Profile photo display"
   });
 });
 

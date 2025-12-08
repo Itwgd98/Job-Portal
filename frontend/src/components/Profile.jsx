@@ -17,6 +17,8 @@ const Profile = () => {
     useGetAppliedJobs();
     const [open, setOpen] = useState(false);
     const { user } = useSelector(store => store.auth);
+    console.log("Profile Component Rendered - Version 2.1");
+    console.log("User Profile Photo:", user?.profile?.profilePhoto);
 
     return (
         <div>
