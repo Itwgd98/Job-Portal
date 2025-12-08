@@ -37,9 +37,9 @@ app.use("/api/v1/application", applicationRoute);
 // Version check endpoint - deploy timestamp: 2024-12-07 20:50
 app.get("/api/v1/version", (req, res) => {
   res.json({
-    version: "2.2.0",
-    deployTime: "2025-12-08 19:30",
-    pdfFix: "Fixed deployment path (backend/build) and cache headers"
+    version: "2.3.0",
+    deployTime: "2025-12-08 19:40",
+    pdfFix: "Fixed PDF resume forced download issue"
   });
 });
 

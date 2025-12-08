@@ -147,14 +147,13 @@ export const updateProfile = async (req, res) => {
             const isPDF = file.originalname.toLowerCase().endsWith('.pdf');
 
             if (isPDF) {
-                // Upload PDF as 'raw' type for direct download
+                // Upload PDF as 'raw' type
                 // Using raw resource_type ensures proper handling of PDF files
                 cloudResponse = await new Promise((resolve, reject) => {
                     const uploadStream = cloudinary.uploader.upload_stream(
                         {
                             resource_type: "raw",
                             folder: "resumes",
-                            flags: "attachment"  // Forces download instead of browser display
                         },
                         (error, result) => {
                             if (error) reject(error);
