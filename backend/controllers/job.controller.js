@@ -47,6 +47,48 @@ export const postJob = async (req, res) => {
         });
     }
 }
+// update job
+export const updateJob = async (req, res) => {
+    try {
+        const { title, description, requirements, salary, location, jobType, experience, position, companyId } = req.body;
+        const jobId = req.params.id;
+
+        const job = await Job.findById(jobId);
+
+        if (!job) {
+            return res.status(404).json({
+                message: "Job not found.",
+                success: false
+            })
+        };
+
+        // Update fields if provided
+        if (title) job.title = title;
+        if (description) job.description = description;
+        if (requirements) job.requirements = requirements.split(",");
+        if (salary) job.salary = salary;
+        if (location) job.location = location;
+        if (jobType) job.jobType = jobType;
+        if (experience) job.experienceLevel = experience;
+        if (position) job.position = position;
+        if (companyId) job.company = companyId;
+
+        await job.save();
+
+        return res.status(200).json({
+            message: "Job updated successfully.",
+            job,
+            success: true
+        });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            message: "Failed to update job.",
+            success: false
+        })
+    }
+}
+
 // student k liye
 export const getAllJobs = async (req, res) => {
     try {
