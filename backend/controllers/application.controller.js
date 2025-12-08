@@ -66,8 +66,12 @@ export const getAppliedJobs = async (req, res) => {
                 success: false
             })
         };
+
+        // Filter out applications query where job is null (deleted jobs)
+        const validApplications = application.filter(app => app.job);
+
         return res.status(200).json({
-            application,
+            application: validApplications,
             success: true
         })
     } catch (error) {

@@ -1,4 +1,5 @@
 import { Job } from "../models/job.model.js";
+import { Application } from "../models/application.model.js";
 
 // admin post krega job
 export const postJob = async (req, res) => {
@@ -170,6 +171,7 @@ export const getAdminJobs = async (req, res) => {
 }
 
 // delete job
+// delete job
 export const deleteJob = async (req, res) => {
     try {
         const jobId = req.params.id;
@@ -181,6 +183,9 @@ export const deleteJob = async (req, res) => {
                 success: false
             })
         };
+
+        // Delete all associated applications
+        await Application.deleteMany({ job: jobId });
 
         await job.deleteOne();
 
