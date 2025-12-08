@@ -37,9 +37,9 @@ app.use("/api/v1/application", applicationRoute);
 // Version check endpoint - deploy timestamp: 2024-12-07 20:50
 app.get("/api/v1/version", (req, res) => {
   res.json({
-    version: "2.1.0",
-    deployTime: "2025-12-08 19:15",
-    pdfFix: "Fixed updateProfile bug and Profile photo display"
+    version: "2.2.0",
+    deployTime: "2025-12-08 19:30",
+    pdfFix: "Fixed deployment path (backend/build) and cache headers"
   });
 });
 
@@ -54,6 +54,7 @@ app.use(express.static(path.join(__dirname, "build")));
 
 // handle ALL routes → send index.html
 app.get("*", (req, res) => {
+  res.set('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
   res.sendFile(path.join(__dirname, "build", "index.html"));
 });
 
